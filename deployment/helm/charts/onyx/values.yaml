@@ -263,7 +263,7 @@ serviceAccount:
   name: ""
 
 nginx:
-  enabled: true
+  enabled: false
   # Nginx proxy timeout settings (in seconds)
   timeouts:
     connect: 300  # Time to establish connection with upstream server
@@ -1054,9 +1054,9 @@ ingress:
   enabled: false
   className: ""
   api:
-    host: onyx.local
+    host: localhost
   webserver:
-    host: onyx.local
+    host: localhost
 
 letsencrypt:
   enabled: false
