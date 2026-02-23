@@ -82,9 +82,9 @@ spec:
                 name: {{ .Values.config.envConfigMapName }}
           env:
             - name: HOSTNAME
-              value: {{ .Values.webserver.hostname | quote }}
+              value: {{ .Values.webserver.hostname | default "0.0.0.0" | quote }}
             - name: PORT
-              value: {{ .Values.webserver.containerPorts.server | quote }}
+              value: {{ .Values.webserver.containerPorts.server | default 3000 | quote }}
             {{- include "onyx.envSecrets" . | nindent 12}}
             {{- with .Values.webserver.extraEnv }}
             {{- toYaml . | nindent 12 }}
