@@ -81,7 +81,14 @@ spec:
             - configMapRef:
                 name: {{ .Values.config.envConfigMapName }}
           env:
+            - name: HOSTNAME
+              value: {{ .Values.webserver.hostname | quote }}
+            - name: PORT
+              value: {{ .Values.webserver.containerPorts.server | quote }}
             {{- include "onyx.envSecrets" . | nindent 12}}
+            {{- with .Values.webserver.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- with .Values.webserver.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}

@@ -311,6 +311,10 @@ nginx:
 
 webserver:
   replicaCount: 1
+  # Next.js standalone reads HOSTNAME as the bind address.
+  # In Kubernetes HOSTNAME defaults to pod name, which can break startup.
+  # Keep this at 0.0.0.0 unless you have a specific reason to change it.
+  hostname: "0.0.0.0"
   image:
     repository: onyxdotapp/onyx-web-server
     # Overrides the image tag whose default is the chart appVersion.
@@ -391,6 +395,11 @@ webserver:
   # - name: foo
   #   mountPath: "/etc/foo"
   #   readOnly: true
+
+  # Additional environment variables for the webserver container.
+  extraEnv: []
+  # - name: EXAMPLE_ENV
+  #   value: example-value
 
   nodeSelector: {}
   tolerations: []

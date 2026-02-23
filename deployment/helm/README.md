@@ -28,12 +28,20 @@
   * no flag for ephemeral vespa storage yet, might be good for testing
 * kubectl -n onyx port-forward service/onyx-webserver 3000:3000
   * this will forward the local port 3000 to the installed chart for you to run tests, etc.
+  * the chart now sets `webserver.hostname=0.0.0.0` by default so Next.js binds correctly in Kubernetes.
 * When you are finished
   * helm uninstall onyx -n onyx
   * Vespa leaves behind a PVC. Delete it if you are completely done.
     * k -n onyx get pvc
     * k -n onyx delete pvc vespa-storage-da-vespa-0
   * If you didn't disable Postgres persistence earlier, you may want to delete that PVC too.
+
+## Hostname and domain customization
+You can customize runtime host/domain behavior through Helm values:
+- `webserver.hostname` (default `0.0.0.0`) controls the webserver container bind host.
+- `configMap.WEB_DOMAIN` (default `http://localhost:3000`) controls externally visible web URLs.
+- `configMap.DOMAIN` (default `localhost`) controls nginx `server_name`.
+- `ingress.api.host` / `ingress.webserver.host` control ingress hostnames.
 
 ## Run as non-root user
 By default, some onyx containers run as root. If you'd like to explicitly run the onyx containers as a non-root user, update the values.yaml file for the following components:
