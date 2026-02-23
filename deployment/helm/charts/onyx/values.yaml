@@ -263,7 +263,7 @@ serviceAccount:
   name: ""
 
 nginx:
-  enabled: true
+  enabled: false
   # Nginx proxy timeout settings (in seconds)
   timeouts:
     connect: 300  # Time to establish connection with upstream server
@@ -311,6 +311,10 @@ nginx:
 
 webserver:
   replicaCount: 1
+  # Next.js standalone reads HOSTNAME as the bind address.
+  # In Kubernetes HOSTNAME defaults to pod name, which can break startup.
+  # Keep this at 0.0.0.0 unless you have a specific reason to change it.
+  hostname: "0.0.0.0"
   image:
     repository: onyxdotapp/onyx-web-server
     # Overrides the image tag whose default is the chart appVersion.
@@ -391,6 +395,11 @@ webserver:
   # - name: foo
   #   mountPath: "/etc/foo"
   #   readOnly: true
+
+  # Additional environment variables for the webserver container.
+  extraEnv: []
+  # - name: EXAMPLE_ENV
+  #   value: example-value
 
   nodeSelector: {}
   tolerations: []
@@ -1053,10 +1062,12 @@ codeInterpreter:
 ingress:
   enabled: false
   className: ""
+  # Default hostnames are localhost to make kubectl port-forward workflows work out of the box.
+  # For real ingress deployments, override these to your external DNS hostnames.
   api:
-    host: onyx.local
+    host: localhost
   webserver:
-    host: onyx.local
+    host: localhost
 
 letsencrypt:
   enabled: false
