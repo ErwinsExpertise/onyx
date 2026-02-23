@@ -1053,6 +1053,8 @@ codeInterpreter:
 ingress:
   enabled: false
   className: ""
+  # Default hostnames are localhost to make kubectl port-forward workflows work out of the box.
+  # For real ingress deployments, override these to your external DNS hostnames.
   api:
     host: localhost
   webserver:
